@@ -13,10 +13,10 @@ minetest.register_tool("technic:treetap", {
 			return
 		end
 		local pos = pointed_thing.under
-		if minetest.is_protected(pos, user:get_player_name()) then
+		--[[if minetest.is_protected(pos, user:get_player_name()) then
 			minetest.record_protection_violation(pos, user:get_player_name())
 			return
-		end
+		end]]
 		local node = minetest.get_node(pos)
 		local node_name = node.name
 		if node_name ~= "moretrees:rubber_tree_trunk" then
