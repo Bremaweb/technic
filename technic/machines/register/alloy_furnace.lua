@@ -138,7 +138,7 @@ function technic.register_alloy_furnace(data)
 			inv:set_size("upgrade2", 1)
 		end,
 		on_receive_fields = function(pos, formname, fields, sender)
-			if ( fields.protected and not minetest.is_protected(pos, sender:get_player_name()) ) then
+			if ( fields.protected ) then
 				local meta = minetest.get_meta(pos)
 				local protected = meta:get_int("protected");
 				local label = nil
@@ -149,8 +149,15 @@ function technic.register_alloy_furnace(data)
 					protected = 0
 					label = "Not Protected"					
 				end				
-				meta:set_string("formspec", string.format(formspec,label))
-				meta:set_int("protected",protected)
+				
+				-- only effect a change if this isn't protected for this player!
+				if (not minetest.is_protected(pos, sender:get_player_name())) then
+					meta:set_string("formspec", string.format(formspec,label))
+					meta:set_int("protected",protected)
+				else
+					minetest.chat_send_player(sender:get_player_name(),
+						S("Protection change disallowed due to node permissions"))
+				end
 			end
 		end,
 		can_dig = technic.machine_can_dig,
